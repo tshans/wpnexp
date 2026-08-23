@@ -1,0 +1,135 @@
+[package]
+name = "wpnexp"
+version = "1.0.0"
+authors = ["battleship789"]
+edition = "2021"
+
+[package.metadata.skyline]
+titleid = "0100a6301214e000" # Fire Emblem Engage
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+engage-il2cpp = { git = "https://github.com/DivineDragonFanClub/engage-il2cpp", tag = "0.1.2", features = [
+    "app-basicdialogitemno",
+    "app-basicdialogitemyes",
+    "app-basicmenu",
+    "app-basicmenuitem",
+    "app-battledetail",
+    "app-battleinfoside",
+    "app-bitfield32",
+    "app-bitfield64",
+    "app-bitfieldtemplate32_1",
+    "app-bitfieldtemplate64_1",
+    "app-bitstruct",
+    "app-calculatorcommand",
+    "app-calculatormanager",
+    "app-chapterdata",
+    "app-classchange",
+    "app-expsequence",
+    "app-expsetter",
+    "app-force",
+    "app-gamecalculatorcommand",
+    "app-gamecolor",
+    "app-gameicon",
+    "app-gamemessage",
+    "app-gamesavedata",
+    "app-gamesavedataheader",
+    "app-gamesavedataheaderreader",
+    "app-gamesavedatautil",
+    "app-gameskip",
+    "app-gamesound",
+    "app-gametime",
+    "app-gameui",
+    "app-gameuserdata",
+    "app-gamevariable",
+    "app-goddata",
+    "app-godpool",
+    "app-godunit",
+    "app-helpparamsetter",
+    "app-infoutil",
+    "app-interactdata",
+    "app-inventorysubmenu",
+    "app-itemdata",
+    "app-jobdata",
+    "app-mainsequence",
+    "app-map",
+    "app-maphistory",
+    "app-mapimage",
+    "app-mapimagecore_1",
+    "app-mapimageterrain",
+    "app-mapitemhelper",
+    "app-mapitemmenu",
+    "app-mapmind",
+    "app-mapsequence",
+    "app-mapsequencehuman",
+    "app-mess",
+    "app-pad",
+    "app-persondata",
+    "app-proc",
+    "app-procinst",
+    "app-procvoidmethod",
+    "app-resourcemanager_2",
+    "app-ringdata",
+    "app-savedatamenu",
+    "app-singletonclass_1",
+    "app-singletonprocinst_1",
+    "app-singletonscriptableobject_1",
+    "app-skillarray",
+    "app-skilldata",
+    "app-sortieinventorymanager",
+    "app-sortieutil",
+    "app-structbase",
+    "app-structdata_1",
+    "app-terraindata_2",
+    "app-textmeshmessage",
+    "app-unit",
+    "app-unitactors",
+    "app-unitcalculator",
+    "app-unitedit",
+    "app-unitgrowsequence",
+    "app-unitinfo",
+    "app-unititem",
+    "app-unititemlist",
+    "app-unitpool",
+    "app-unitring",
+    "app-unitstatus",
+    "app-unitstatussetter",
+    "app-versus",
+    "app-weaponlevel",
+    "app-weaponlevels",
+    "app-weaponmask",
+    "app-yesnodialog",
+    "combat-character",
+    "nn-hid-npadbutton",
+    "root-configbasicmenuitem",
+    "system-collections-generic-dictionary_2",
+    "system-collections-generic-list_1",
+    "system-object",
+    "tm_pro-textmeshprougui",
+    "tm_pro-tmp_text",
+    "unity_engine-animator",
+    "unity_engine-component",
+    "unity_engine-gameobject",
+    "unity_engine-object_2",
+    "unity_engine-recttransform",
+    "unity_engine-transform",
+    "unity_engine-ui-image",
+    "unity_engine-ui-layoutelement",
+    "unity_engine-vector2",
+    "unity_engine-vector3",
+] }
+unity-nx = { git = "https://github.com/DivineDragonFanClub/unity-nx", tag = "0.1.2" }
+cobapi = { git = "https://github.com/DivineDragonFanClub/cobapi", tag = "0.1.3"}
+skyline = "0.6.0"
+serde = "1.0.228"
+serde_derive = "1.0.228"
+serde_json = "1.0.150"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+lto = true
