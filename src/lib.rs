@@ -107,6 +107,7 @@ pub fn main() {
 
 
     skyline::install_hook!(add_command_hook);
+    skyline::install_hook!(crate::game::save::game_user_restart_set_target_hook);
     skyline::install_hook!(crate::game::save::load_confirm_a_call_hook);
     skyline::install_hook!(crate::game::save::save_confirm_a_call_hook);
     skyline::install_hook!(crate::game::save::suspend_confirm_a_call_hook);
@@ -165,12 +166,10 @@ pub fn main() {
 
     skyline::install_hook!(crate::ui::armsscroll::map::map_sub_menu_create_bind_hook);
     skyline::install_hook!(crate::ui::armsscroll::map::map_item_helper_can_use_hook);
-    crate::ui::armsscroll::map::register_arms_scroll_yes_dialog();
     crate::ui::armsscroll::map::register_arms_scroll_map_menu_item();
     crate::ui::armsscroll::map::register_map_submenu();
 
     skyline::install_hook!(crate::ui::armsscroll::sortie::sortie_sub_menu_create_bind_hook);
-    crate::ui::armsscroll::sortie::register_arms_scroll_yes_dialog();
     crate::ui::armsscroll::sortie::register_arms_scroll_menu_item();
     crate::ui::armsscroll::sortie::register_sortie_submenu();
 

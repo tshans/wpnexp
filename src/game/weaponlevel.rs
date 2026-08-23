@@ -13,6 +13,7 @@ use crate::game::data::calculate_unit_wexp_kind;
 use crate::game::data::set_new_wlvl;
 
 
+// Currently, this uses RD values...
 pub static WEXP_KINDS: [&str; 8] = ["N", "E", "D", "C", "B", "A", "S", "SS"];
 pub static WEXP_VALUES: [i32; 8] = [0, 1, 31, 71, 121, 181, 251, 331];
 pub static WEXP_DELTAS: [i32; 8] = [0, 30, 40, 50, 60, 70, 80, -1];
@@ -39,7 +40,6 @@ pub fn wlvl_kind_to_string(wlvl: WeaponLevel_Kind) -> Il2CppString {
     WEXP_KINDS[wlvl.value as usize].into()
 }
 
-// Currently, this uses RD values...
 pub fn wexp_to_wlvl_kind(value: i32) -> WeaponLevel_Kind {
     if value < WEXP_VALUES[1] {
         WeaponLevel_Kind { value: 0 }   // None

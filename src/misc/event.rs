@@ -95,7 +95,7 @@ pub extern "C" fn listener(event: &Event<SystemEvent>) {
                 }
             }
         } else if proc.get_hash_code() == -813168385 && *label == 1 {
-            // We add a splash screen after a wlvl increase and reset
+            // We add a splash screen after a wlvl increase.
             // UnitGrowSequence.Label == LevelUpEnd (1)
             let kind = get_weapon_kind();
             let old = get_old_wlvl();

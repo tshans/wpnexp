@@ -12,8 +12,8 @@ crate-type = ["cdylib"]
 
 [dependencies]
 engage-il2cpp = { git = "https://github.com/DivineDragonFanClub/engage-il2cpp", tag = "0.1.2", features = [
-    "app-basicdialogitemno",
-    "app-basicdialogitemyes",
+    "app-basicdialog",
+    "app-basicdialogitem",
     "app-basicmenu",
     "app-basicmenuitem",
     "app-battledetail",
@@ -43,6 +43,7 @@ engage-il2cpp = { git = "https://github.com/DivineDragonFanClub/engage-il2cpp", 
     "app-gametime",
     "app-gameui",
     "app-gameuserdata",
+    "app-gameuserrestartdata",
     "app-gamevariable",
     "app-goddata",
     "app-godpool",

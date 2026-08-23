@@ -1,10 +1,12 @@
 
 use engage::app::BattleInfoSide;
+use engage::app::BattleInfoSide_Status;
 use engage::app::CalculatorCommand;
 use engage::app::CalculatorManager;
 use engage::app::Force_Type;
 use engage::app::IBattleInfoSide;
 use engage::app::IBattleInfoSideMethods;
+use engage::app::IBitFieldTemplate32_1Methods;
 use engage::app::ICalculatorManagerMethods;
 use engage::app::IUnitItem;
 use engage::app::IUnitItemMethods;
@@ -313,20 +315,21 @@ pub extern "C" fn set_impl_side_unit_wexp_command(
     _method_info: OptionalMethod,
 ) {
     if side.is_null() {
-        set_weapon_kind(0);
         return
     }
 
     let unit = side.get_unit();
     if unit.is_null() || unit.get_force_type() != Force_Type::player() {
-        set_weapon_kind(0);
+        return
+    }
+
+    if !side.m_reverse().is_null() && side.m_reverse().get_status().test(BattleInfoSide_Status::rod()) {
         set_total_wexp(unit, 0);
         return
     }
 
     let mut unit_item = side.m_specified_item();
     if unit_item.is_null() {
-        set_weapon_kind(0);
         set_total_wexp(unit, 0);
         return
     } else if unit_item.m_index() == 0 {
@@ -338,7 +341,6 @@ pub extern "C" fn set_impl_side_unit_wexp_command(
         if unit_item.is_null() || unit_item.m_item().is_null() {
             unit_item = unit.get_item_equipped();
             if unit_item.is_null() || unit_item.m_item().is_null() {
-                set_weapon_kind(0);
                 set_total_wexp(unit, 0);
                 return
             }

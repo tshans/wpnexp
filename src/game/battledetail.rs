@@ -28,14 +28,5 @@ pub fn battle_detail_calc_battle_hook(
 }
 
 pub extern "C" fn battledetail_calcwexp(_this: BattleDetail, current: BattleInfoSide) {
-    // if !reverse.is_null() && reverse.get_status().test(BattleInfoSide_Status::rod()) {
-    //     set_once_wexp(current.m_unit(), 0);
-    // } else if current.get_status().test(BattleInfoSide_Status::rod()) {
-    //     let earned_wexp = calculate_side_earned_wexp(current);
-    //     set_once_wexp(current.m_unit(), earned_wexp);
-    // } else {
-    //     let earned_wexp = calculate_side_earned_wexp(current);
-    //     set_once_wexp(current.m_unit(), earned_wexp);
-    // }
     set_once_wexp(current.m_unit(), calculate_side_earned_wexp(current));
 }

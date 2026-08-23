@@ -4,10 +4,11 @@ use engage::BasicMenuItemAttribute;
 use engage::BasicMenuResult;
 use engage::ProcVoidMethodExt;
 
-use engage::app::BasicDialogItemNo;
-use engage::app::BasicDialogItemYes;
+use engage::app::BasicDialog;
+use engage::app::BasicDialogItem;
 use engage::app::GameMessage;
 use engage::app::GameSound;
+use engage::app::IBasicDialogMethods;
 use engage::app::IBasicMenu;
 use engage::app::IBasicMenuMethods;
 use engage::app::IGameMessageMethods;
@@ -33,9 +34,8 @@ use engage::app::Mess;
 use engage::app::IProcInstMethods;
 use engage::app::Unit;
 
+use engage::app::basicdialogitem::*;
 use engage::app::sortieutil::SortieUtil;
-use engage::app::basicdialogitemyes::*;
-use engage::app::yesnodialog::YesNoDialog;
 
 use engage::combat::Character;
 use engage::nn::hid::NpadButton;
@@ -53,10 +53,10 @@ use crate::game::data::calculate_arms_scroll_delta;
 
 #[unity::inject(
     namespace = "Wexp",
-    name = "ArmsScrollYesDialog",
-    parent = BasicDialogItemYes,
+    name = "ArmsScrollMenuItem",
+    parent = BasicDialogItem,
 )]
-pub struct ArmsScrollYesDialog {
+pub struct ArmsScrollDialogMenuItem {
     pub index: i32,
     pub unit: Unit,
     pub delta: i32,
@@ -64,10 +64,27 @@ pub struct ArmsScrollYesDialog {
 }
 
 #[unity::injected_methods]
-impl ArmsScrollYesDialog {
+impl ArmsScrollDialogMenuItem {
     #[override_virtual(name = "GetName")]
     pub fn get_name(self) -> Il2CppString {
-        Mess::get("MID_MENU_YES")
+        let kind = match self.kind().value {
+            1 => Mess::get("MID_H_INFO_WLV_Sword"),
+            2 => Mess::get("MID_H_INFO_WLV_Lance"),
+            3 => Mess::get("MID_H_INFO_WLV_Axe"),
+            4 => Mess::get("MID_H_INFO_WLV_Bow"),
+            5 => Mess::get("MID_H_INFO_WLV_Dagger"),
+            6 => Mess::get("MID_H_INFO_WLV_Magic"),
+            7 => Mess::get("MID_H_INFO_WLV_Rod"),
+            8 => Mess::get("MID_H_INFO_WLV_Fist"),
+            9 => Mess::get("MID_H_INFO_WLV_Special"),
+            _ => panic!("ItemData.Kinds value is invalid."),
+        };
+
+        Mess::get_3(
+            "MID_MSG_ArmsScroll_Used",
+            kind,
+            self.delta().to_string()
+        )
     }
 
     #[override_virtual(name = "ACall")]
@@ -106,93 +123,17 @@ impl ArmsScrollYesDialog {
     }
 }
 
-pub fn register_arms_scroll_yes_dialog() -> Class {
-    let result = cobapi::injection::register::<ArmsScrollYesDialog>();
-    match result {
-        Ok(klass) => klass,
-        Err(e) => panic!("Failed to register ArmsScrollYesDialog: {}.", e),
-    }
-}
-
-#[no_mangle]
-pub extern "C" fn yes_dialog_callback(index: i32, unit: Unit, delta: i32, kind: ItemData_Kinds) -> BasicDialogItemYes {
-    let instance = ArmsScrollYesDialog::instantiate().unwrap();
-    instance.set_index(index);
-    instance.set_unit(unit);
-    instance.set_delta(delta);
-    instance.set_kind(kind);
-    instance.try_cast::<BasicDialogItemYes>().unwrap()
-}
-
-#[unity::inject(
-    namespace = "Wexp",
-    name = "ArmsScrollMenuItem",
-    parent = BasicMenuItem,
-)]
-pub struct ArmsScrollMenuItem {
-    pub index: i32,
-    pub unit: Unit,
-    pub delta: i32,
-    pub kind: ItemData_Kinds,
-}
-
-#[unity::injected_methods]
-impl ArmsScrollMenuItem {
-    #[override_virtual(name = "GetName")]
-    pub fn get_name(self) -> Il2CppString {
-        match self.kind().value {
-            1 => Mess::get("MID_H_INFO_WLV_Sword"),
-            2 => Mess::get("MID_H_INFO_WLV_Lance"),
-            3 => Mess::get("MID_H_INFO_WLV_Axe"),
-            4 => Mess::get("MID_H_INFO_WLV_Bow"),
-            5 => Mess::get("MID_H_INFO_WLV_Dagger"),
-            6 => Mess::get("MID_H_INFO_WLV_Magic"),
-            7 => Mess::get("MID_H_INFO_WLV_Rod"),
-            8 => Mess::get("MID_H_INFO_WLV_Fist"),
-            9 => Mess::get("MID_H_INFO_WLV_Special"),
-            _ => panic!("ItemData.Kinds value is invalid."),
-        }
-    }
-
-    #[override_virtual(name = "ACall")]
-    pub fn a_call(self) -> BasicMenuResult {
-        let unit = self.unit();
-
-        let message = Mess::get_3(
-            "MID_MSG_ArmsScroll_Used",
-            self.get_name(),
-            self.delta().to_string()
-        );
-
-        let yes = yes_dialog_callback(self.index(), unit, self.delta(), self.kind());
-
-        YesNoDialog::create_bind(
-            self.get_menu(),
-            message,
-            yes,
-            BasicDialogItemNo::null(),
-        );
-
-        BasicMenuResult::se_decide()
-    }
-
-    #[override_virtual(name = "BuildAttribute")]
-    pub fn build_attribute(self) -> BasicMenuItemAttribute {
-        BasicMenuItemAttribute::enable()
-    }
-}
-
 pub fn register_arms_scroll_menu_item() -> Class {
-    let result = cobapi::injection::register::<ArmsScrollMenuItem>();
+    let result = cobapi::injection::register::<ArmsScrollDialogMenuItem>();
     match result {
         Ok(klass) => klass,
-        Err(e) => panic!("Failed to register ArmsScrollMenuItem: {}.", e),
+        Err(e) => panic!("Failed to register ArmsScrollDialogMenuItem: {}.", e),
     }
 }
 
 #[no_mangle]
 pub extern "C" fn menu_item_callback(index: i32, unit: Unit, delta: i32, kind: ItemData_Kinds) -> BasicMenuItem {
-    let instance = ArmsScrollMenuItem::instantiate().unwrap();
+    let instance = ArmsScrollDialogMenuItem::instantiate().unwrap();
     instance.set_index(index);
     instance.set_unit(unit);
     instance.set_delta(delta);
@@ -270,7 +211,8 @@ extern "C" fn sortie_submenu_start(seq: ProcInst, _method_info: OptionalMethod) 
         }
     }
 
-    BasicMenu::create_basic_menu_bind(menu_item_list, seq);
+    let dialog = BasicDialog::create_basic_dialog_bind(seq, menu_item_list);
+    dialog.set_text(Mess::get("MID_MSG_ArmsScroll_Use"));
 }
 
 pub fn open_sortie_submenu(menu: BasicMenu) {

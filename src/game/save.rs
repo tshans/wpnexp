@@ -1,6 +1,7 @@
 
 use engage::app::BasicMenu_Result;
 use engage::app::GameSaveData_Types;
+use engage::app::GameUserRestartData_Targtes;
 use engage::app::IGameSaveDataHeaderMethods;
 use engage::app::IGameSaveDataHeaderReader_HandleMethods;
 use engage::app::IMapSequenceMethods;
@@ -38,6 +39,20 @@ use crate::TEMP_UNIT_WEXP_DATA;
 use crate::UNIT_WEXP_DATA;
 use crate::WEXP_LEDGER;
 
+
+#[unity::hook("App", "GameUserRestartData", "SetTarget")] // 0x710251E1D0
+pub fn game_user_restart_set_target_hook(
+    target: GameUserRestartData_Targtes,
+    keep_level: bool,
+    method_info: OptionalMethod,
+) {
+    call_original!(target, keep_level, method_info);
+
+    if !keep_level {
+        let default_temp_data = read_default_dyn_unit_data().ok();
+        TEMP_UNIT_WEXP_DATA.set(default_temp_data).expect("Failed to set default TempUnitWexpData on map restart.");
+    }
+}
 
 #[unity::hook("App", "SaveDataMenu.LoadConfirmDialog.YesDialogItem", "ACall")] // 0x71022ED580
 pub fn load_confirm_a_call_hook(
