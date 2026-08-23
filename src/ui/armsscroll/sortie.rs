@@ -67,7 +67,7 @@ pub struct ArmsScrollDialogMenuItem {
 impl ArmsScrollDialogMenuItem {
     #[override_virtual(name = "GetName")]
     pub fn get_name(self) -> Il2CppString {
-        let kind = match self.kind().value {
+        match self.kind().value {
             1 => Mess::get("MID_H_INFO_WLV_Sword"),
             2 => Mess::get("MID_H_INFO_WLV_Lance"),
             3 => Mess::get("MID_H_INFO_WLV_Axe"),
@@ -78,13 +78,7 @@ impl ArmsScrollDialogMenuItem {
             8 => Mess::get("MID_H_INFO_WLV_Fist"),
             9 => Mess::get("MID_H_INFO_WLV_Special"),
             _ => panic!("ItemData.Kinds value is invalid."),
-        };
-
-        Mess::get_3(
-            "MID_MSG_ArmsScroll_Used",
-            kind,
-            self.delta().to_string()
-        )
+        }
     }
 
     #[override_virtual(name = "ACall")]
