@@ -1,5 +1,7 @@
 #![feature(lock_value_accessors)]
 
+extern crate self as wpnexp;
+
 // I like the current WEXP setup:
 //     Total WEXP = Static + Dynamic + Job
 //     Earned WEXP = Weapon + Unit's Innate Proficiency + Emblem Favored Weapon
