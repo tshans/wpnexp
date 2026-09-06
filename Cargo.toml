@@ -8,7 +8,7 @@ edition = "2021"
 titleid = "0100a6301214e000" # Fire Emblem Engage
 
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "lib"]
 
 [dependencies]
 engage-il2cpp = { git = "https://github.com/DivineDragonFanClub/engage-il2cpp", tag = "0.1.2", features = [
