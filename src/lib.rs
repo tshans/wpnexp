@@ -1,6 +1,7 @@
 #![feature(lock_value_accessors)]
 
 extern crate self as wpnexp;
+extern crate wpnexp_lib as wpnexp_lib;
 
 // I like the current WEXP setup:
 //     Total WEXP = Static + Dynamic + Job
