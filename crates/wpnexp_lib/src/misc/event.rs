@@ -19,14 +19,11 @@ use engage::unity_engine::Vector2;
 use engage::unity_engine::Vector3;
 
 use unity::Cast;
+use unity::IlNull;
 
 use cobapi::Event;
 use cobapi::SystemEvent;
-use unity::IlNull;
 
-use crate::TEMP_UNIT_WEXP_DATA;
-use crate::UNIT_WEXP_DATA;
-use crate::WEXP_LEDGER;
 use crate::game::data::get_new_wlvl;
 use crate::game::data::get_old_wlvl;
 use crate::game::data::get_weapon_kind;
@@ -34,7 +31,11 @@ use crate::game::data::read_dynamic_unit_data;
 use crate::game::data::read_ledger_unit_data;
 use crate::game::data::read_unit_data;
 use crate::game::weaponlevel::wlvl_kind_to_string;
-use crate::option_null;
+
+use crate::misc::option_null;
+use crate::misc::statics::TEMP_UNIT_WEXP_DATA;
+use crate::misc::statics::UNIT_WEXP_DATA;
+use crate::misc::statics::WEXP_LEDGER;
 
 
 #[no_mangle]
@@ -246,4 +247,9 @@ pub extern "C" fn listener(event: &Event<SystemEvent>) {
     //         copy_ledger_unit_data(*to_id, *from_id).expect("Failed to copy WexpLedger.");
     //     }
     // }
+}
+
+
+pub fn register_listener() {
+    cobapi::register_system_event_handler(listener);
 }

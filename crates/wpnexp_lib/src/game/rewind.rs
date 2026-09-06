@@ -15,8 +15,8 @@ use unity::Cast;
 use unity::OptionalMethod;
 
 use crate::game::data::read_default_dyn_unit_data;
-use crate::TEMP_UNIT_WEXP_DATA;
-use crate::WEXP_LEDGER;
+use crate::misc::statics::TEMP_UNIT_WEXP_DATA;
+use crate::misc::statics::WEXP_LEDGER;
 
 
 pub fn write_to_ledger(command_num: i32) {

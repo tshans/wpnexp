@@ -239,18 +239,6 @@ pub extern "C" fn sortie_submenu_callback() -> BasicMenuItem {
     item.try_cast::<BasicMenuItem>().unwrap()
 }
 
-fn arms_scroll_can_grow(unit: Unit) -> bool {
-    for i in 1..=9 {
-        let delta = calculate_arms_scroll_delta(unit, ItemData_Kinds { value: i });
-        match delta {
-            Some(_value) => return true,
-            None => continue
-        }
-    }
-
-    false
-}
-
 #[unity::hook("App", "InventorySubMenu", "CreateBind")] // 0x710279C840
 pub fn sortie_sub_menu_create_bind_hook(
     sup: ProcInst,
@@ -269,7 +257,7 @@ pub fn sortie_sub_menu_create_bind_hook(
     let unit = manager.m_selection().get_unit();
     let item = manager.m_selection().get_unit_item();
     if item.m_item().get_use_type() == ItemData_UseTypes::weapon_level_up()
-        && arms_scroll_can_grow(unit) {
+        && crate::game::data::arms_scroll_can_grow(unit) {
             // We replace the game's default "UseItem" menu option.
             let menu = child.try_cast::<BasicMenu>().unwrap();
             let map_item = sortie_submenu_callback();

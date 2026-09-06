@@ -546,16 +546,15 @@ pub fn unit_item_equip_options_hook(
     if IBitFieldTemplate64_1Methods::test(this.get_status(), Unit_Status::engaging()) {
         let mut god = this.get_god_unit();
         let mut god_data: GodData;
-        let parent: Unit;
 
-        if !this.m_god_link().is_null() {
-            god = this.m_god_link();
-            parent = god.get_parent();
-        } else if !god.is_null() {
-            parent = god.get_parent();
-        } else {
-            parent = Unit::null();
-        }
+        let parent = if !this.m_god_link().is_null() {
+                god = this.m_god_link();
+                god.get_parent()
+            } else if !god.is_null() {
+                god.get_parent()
+            } else {
+                Unit::null()
+            };
 
         if parent.is_null() {
             god_data = god.get_data();
@@ -1018,16 +1017,15 @@ pub fn unit_can_item_equip_idrw_hook(
     if IBitFieldTemplate64_1Methods::test(this.get_status(), Unit_Status::engaging()) {
         let mut god = this.get_god_unit();
         let mut god_data: GodData;
-        let parent: Unit;
 
-        if !this.m_god_link().is_null() {
-            god = this.m_god_link();
-            parent = god.get_parent();
-        } else if !god.is_null() {
-            parent = god.get_parent();
-        } else {
-            parent = Unit::null();
-        }
+        let parent = if !this.m_god_link().is_null() {
+                god = this.m_god_link();
+                god.get_parent()
+            } else if !god.is_null() {
+                god.get_parent()
+            } else {
+                Unit::null()
+            };
 
         if parent.is_null() {
             god_data = god.get_data();
@@ -1398,16 +1396,15 @@ pub fn unit_get_rod_range_hook(
         if IBitFieldTemplate64_1Methods::test(this.get_status(), Unit_Status::engaging()) {
             let mut god = this.get_god_unit();
             let mut god_data: GodData;
-            let parent: Unit;
 
-            if !this.m_god_link().is_null() {
-                god = this.m_god_link();
-                parent = god.get_parent();
-            } else if !god.is_null() {
-                parent = god.get_parent();
-            } else {
-                parent = Unit::null();
-            }
+            let parent = if !this.m_god_link().is_null() {
+                    god = this.m_god_link();
+                    god.get_parent()
+                } else if !god.is_null() {
+                    god.get_parent()
+                } else {
+                    Unit::null()
+                };
 
             if parent.is_null() {
                 god_data = god.get_data();
@@ -1619,4 +1616,35 @@ pub fn unit_is_draw_active_color(
     }
     
     this.can_item_equip(unit_item, unit_item.get_kind() == ItemData_Kinds::rod(), true)
+}
+
+pub fn install_hook_hooks() {
+    skyline::install_hook!(class_change_get_disp_wlvl_hook);
+    skyline::install_hook!(unit_get_weapon_level_hook);
+    skyline::install_hook!(unit_update_state_impl_hook);
+    skyline::install_hook!(unit_item_equip_hook);
+    skyline::install_hook!(unit_item_equip_options_hook);
+    skyline::install_hook!(unit_can_breakable_hook);
+    skyline::install_hook!(unit_can_enemy_engage_attack_hook);
+    skyline::install_hook!(unit_set_optimal_weapon_hook);
+    skyline::install_hook!(unit_item_add_on_dlc_evil_hook);
+    skyline::install_hook!(unit_equipable_item_add);
+    skyline::install_hook!(unit_has_equipable_item_hook);
+    skyline::install_hook!(unit_has_equipable_item_range_hook);
+    skyline::install_hook!(unit_has_equipable_item_kind_hook);
+    skyline::install_hook!(unit_can_item_equip_uire_hook);
+    skyline::install_hook!(unit_can_item_equip_idrw_hook);
+    skyline::install_hook!(unit_can_item_equip_ire_hook);
+    skyline::install_hook!(unit_can_use_cannon_xz_hook);
+    skyline::install_hook!(unit_can_use_cannon_terrain_hook);
+    skyline::install_hook!(unit_next_item_equip_hook);
+    skyline::install_hook!(unit_get_engage_equip_hook);
+    skyline::install_hook!(unit_get_attack_range_hook);
+    skyline::install_hook!(unit_get_attack_range_item_hook);
+    skyline::install_hook!(unit_get_rod_range_hook);
+    skyline::install_hook!(unit_get_rod_range_item_hook);
+    skyline::install_hook!(unit_get_revenge_weapon_hook);
+    skyline::install_hook!(unit_can_item_use_hook);
+    skyline::install_hook!(unit_can_item_use_target_hook);
+    skyline::install_hook!(unit_is_draw_active_color);
 }

@@ -207,7 +207,7 @@ fn modify_wdwexproot_prefab(wdw_exp_root: GameObject) {
                 message_text.set_m_font_size_max(16.0);
 
                 let message_layout = wexp_message_t.get_game_object().get_component::<LayoutElement>();
-                message_layout.set_preferred_height(24.0);
+                message_layout.set_preferred_height(24.0_f32);
 
                 let message_tmm = wexp_message_t.get_game_object().get_component::<TextMeshMessage>();
                 Object_2::destroy_2(message_tmm);
@@ -226,8 +226,8 @@ fn modify_wdwexproot_prefab(wdw_exp_root: GameObject) {
                 value_text.set_m_font_size_base(26.0);
 
                 let value_layout = wexp_value_act_t.get_game_object().get_component::<LayoutElement>();
-                value_layout.set_preferred_width(50.0);
-                value_layout.set_preferred_height(24.0);
+                value_layout.set_preferred_width(50.0_f32);
+                value_layout.set_preferred_height(24.0_f32);
             }
         }
 
@@ -255,8 +255,8 @@ fn modify_wdwexproot_prefab(wdw_exp_root: GameObject) {
             max_text.set_m_font_size_max(26.0);
 
             let max_layout = wexp_max_t.get_game_object().get_component::<LayoutElement>();
-            max_layout.set_preferred_width(50.0);
-            max_layout.set_preferred_height(24.0);
+            max_layout.set_preferred_width(50.0_f32);
+            max_layout.set_preferred_height(24.0_f32);
 
             let max_tmm = wexp_max_t.get_game_object().get_component::<TextMeshMessage>();
             Object_2::destroy_2(max_tmm);
@@ -286,8 +286,8 @@ fn modify_wdwexproot_prefab(wdw_exp_root: GameObject) {
             increase_text.set_m_font_size_base(26.0);
 
             let increase_layout = wexp_increase_t.get_game_object().get_component::<LayoutElement>();
-            increase_layout.set_preferred_width(66.0);
-            increase_layout.set_preferred_height(24.0);
+            increase_layout.set_preferred_width(66.0_f32);
+            increase_layout.set_preferred_height(24.0_f32);
         }
     }
 }

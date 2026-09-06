@@ -236,18 +236,6 @@ pub extern "C" fn map_submenu_callback() -> BasicMenuItem {
     item.try_cast::<BasicMenuItem>().unwrap()
 }
 
-fn arms_scroll_can_grow(unit: Unit) -> bool {
-    for i in 1..=9 {
-        let delta = calculate_arms_scroll_delta(unit, ItemData_Kinds { value: i });
-        match delta {
-            Some(_value) => return true,
-            None => continue
-        }
-    }
-
-    false
-}
-
 #[unity::hook("App", "MapItemHelper", "CanUseImpl")] // 0x7101DEA700
 pub fn map_item_helper_can_use_hook(
     unit: Unit,
@@ -258,7 +246,7 @@ pub fn map_item_helper_can_use_hook(
     method_info: OptionalMethod,
 ) -> bool {
     if use_type == ItemData_UseTypes::weapon_level_up() {
-        arms_scroll_can_grow(unit)
+        crate::game::data::arms_scroll_can_grow(unit)
     } else {
         call_original!(unit, item, target, use_type, give_skills, method_info)
     }
@@ -281,7 +269,7 @@ pub fn map_sub_menu_create_bind_hook(
     let unit = MapMind::get_instance().get_unit();
     let item = unit.get_item(unit_item_index);
     if item.m_item().get_use_type() == ItemData_UseTypes::weapon_level_up()
-        && arms_scroll_can_grow(unit) {
+        && crate::game::data::arms_scroll_can_grow(unit) {
             // We replace the game's default "UseItem" menu option.
             let menu = child.try_cast::<BasicMenu>().unwrap();
             let map_item = map_submenu_callback();

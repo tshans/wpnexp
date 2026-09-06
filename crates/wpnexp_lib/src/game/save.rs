@@ -35,9 +35,9 @@ use crate::game::data::write_dynamic_unit_data;
 use crate::game::data::write_ledger_unit_data;
 use crate::game::data::write_unit_data;
 
-use crate::TEMP_UNIT_WEXP_DATA;
-use crate::UNIT_WEXP_DATA;
-use crate::WEXP_LEDGER;
+use crate::misc::statics::TEMP_UNIT_WEXP_DATA;
+use crate::misc::statics::UNIT_WEXP_DATA;
+use crate::misc::statics::WEXP_LEDGER;
 
 
 #[unity::hook("App", "GameUserRestartData", "SetTarget")] // 0x710251E1D0
@@ -270,4 +270,17 @@ pub fn map_auto_save_hook(
     }
 
     call_original!(this, method_info)
+}
+
+
+pub fn install_save_hooks() {
+    skyline::install_hook!(game_user_restart_set_target_hook);
+    skyline::install_hook!(load_confirm_a_call_hook);
+    skyline::install_hook!(save_confirm_a_call_hook);
+    skyline::install_hook!(suspend_confirm_a_call_hook);
+    skyline::install_hook!(delete_confirm_a_call_hook);
+    skyline::install_hook!(copy_confirm_a_call_hook);
+    skyline::install_hook!(game_save_data_util_delete_all_hook);
+    skyline::install_hook!(map_auto_save_hook);
+    skyline::install_hook!(main_auto_save_hook);
 }

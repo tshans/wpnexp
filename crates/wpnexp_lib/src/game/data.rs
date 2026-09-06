@@ -27,7 +27,7 @@ use unity::Cast;
 use crate::game::weaponlevel::wexp_to_wlvl_kind;
 use crate::game::weaponlevel::wlvl_delta_kind;
 use crate::game::weaponlevel::wlvl_to_wexp_kind;
-use crate::{BATTLE_WEXP, TEMP_UNIT_WEXP_DATA, UNIT_WEXP_DATA, WEXP_DATA};
+use crate::misc::statics::{BATTLE_WEXP, TEMP_UNIT_WEXP_DATA, UNIT_WEXP_DATA, WEXP_DATA};
 
 
 // Storage Read/Write Functions
@@ -365,20 +365,20 @@ pub fn get_job_wexp(job: JobData, kind: ItemData_Kinds) -> i32 {
     }
 
     match job.max_weapon_levels().get(kind.value as usize).to_rust_string().as_str() {
-        "E" => 1,
-        "E+" => 1,
-        "D" => 1,
-        "D+" => 1,
-        "C" => 1,       // In vanilla, this is the lowest Max WLVL.
-        "C+" => 1,
-        "B" => 1,
-        "B+" => 31,
-        "A" => 31,
-        "A+" => 71,
-        "S" => 71,
-        "S+" => 121,
-        "SS" => 121,    // Use Z instead?
-        _ => 0,         // Includes "N"
+        "E" => crate::game::weaponlevel::WEXP_VALUES[1],    // Guarantees use of E rank weapons
+        "E+" => crate::game::weaponlevel::WEXP_VALUES[1],
+        "D" => crate::game::weaponlevel::WEXP_VALUES[1],
+        "D+" => crate::game::weaponlevel::WEXP_VALUES[1],
+        "C" => crate::game::weaponlevel::WEXP_VALUES[1],    // In vanilla, this is the lowest Max WLVL.
+        "C+" => crate::game::weaponlevel::WEXP_VALUES[1],
+        "B" => crate::game::weaponlevel::WEXP_VALUES[1],
+        "B+" => crate::game::weaponlevel::WEXP_VALUES[2],   // Guarantees use of D rank weapons
+        "A" => crate::game::weaponlevel::WEXP_VALUES[2],
+        "A+" => crate::game::weaponlevel::WEXP_VALUES[3],   // Guarantees use of C rank weapons
+        "S" => crate::game::weaponlevel::WEXP_VALUES[3],
+        "S+" => crate::game::weaponlevel::WEXP_VALUES[4],   // Guarantees use of B rank weapons
+        "SS" => crate::game::weaponlevel::WEXP_VALUES[4],   // Use Z instead?
+        _ => crate::game::weaponlevel::WEXP_VALUES[0],      // Includes "N", cannot use provided kind
     }
 
     // let ty = match kind.value {
@@ -644,6 +644,18 @@ pub fn calculate_arms_scroll_delta(
         // Otherwise, we increase WEXP by the difference between the current and next WLVL.
         Some(wexp_delta)
     }
+}
+
+pub fn arms_scroll_can_grow(unit: Unit) -> bool {
+    for i in 1..=9 {
+        let delta = calculate_arms_scroll_delta(unit, ItemData_Kinds { value: i });
+        match delta {
+            Some(_value) => return true,
+            None => continue
+        }
+    }
+
+    false
 }
 
 // WEXP Data Structures
