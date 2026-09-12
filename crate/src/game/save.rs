@@ -41,7 +41,7 @@ use crate::misc::statics::WEXP_LEDGER;
 
 
 #[unity::hook("App", "GameUserRestartData", "SetTarget")] // 0x710251E1D0
-pub fn game_user_restart_set_target_hook(
+fn game_user_restart_set_target_hook(
     target: GameUserRestartData_Targtes,
     keep_level: bool,
     method_info: OptionalMethod,
@@ -55,7 +55,7 @@ pub fn game_user_restart_set_target_hook(
 }
 
 #[unity::hook("App", "SaveDataMenu.LoadConfirmDialog.YesDialogItem", "ACall")] // 0x71022ED580
-pub fn load_confirm_a_call_hook(
+fn load_confirm_a_call_hook(
     this: SaveDataMenu_LoadConfirmDialog_YesDialogItem,
     method_info: OptionalMethod,
 ) -> BasicMenu_Result {
@@ -86,7 +86,7 @@ pub fn load_confirm_a_call_hook(
 }
 
 #[unity::hook("App", "SaveDataMenu.SaveConfirmDialog.YesDialogItem", "ACall")] // 0x71022ED760
-pub fn save_confirm_a_call_hook(
+fn save_confirm_a_call_hook(
     this: SaveDataMenu_SaveConfirmDialog_YesDialogItem,
     method_info: OptionalMethod,
 ) -> BasicMenu_Result {
@@ -140,7 +140,7 @@ pub fn save_confirm_a_call_hook(
 }
 
 #[unity::hook("App", "SaveDataMenu.SuspendConfirmDialog.YesDialogItem", "ACall")] // 0x71022EDA10
-pub fn suspend_confirm_a_call_hook(
+fn suspend_confirm_a_call_hook(
     this: SaveDataMenu_SuspendConfirmDialog_YesDialogItem,
     method_info: OptionalMethod,
 ) -> BasicMenu_Result {
@@ -171,7 +171,7 @@ pub fn suspend_confirm_a_call_hook(
 }
 
 #[unity::hook("App", "SaveDataMenu.DeleteConfirmDialog.YesDialogItem", "ACall")] // 0x71022ED330
-pub fn delete_confirm_a_call_hook(
+fn delete_confirm_a_call_hook(
     this: SaveDataMenu_DeleteConfirmDialog_YesDialogItem,
     method_info: OptionalMethod,
 ) -> BasicMenu_Result {
@@ -185,7 +185,7 @@ pub fn delete_confirm_a_call_hook(
 }
 
 #[unity::hook("App", "SaveDataMenu.CopyConfirmDialog.YesDialogItem", "ACall")] // 0x71022ECFF0
-pub fn copy_confirm_a_call_hook(
+fn copy_confirm_a_call_hook(
     this: SaveDataMenu_CopyConfirmDialog_YesDialogItem,
     method_info: OptionalMethod,
 ) -> BasicMenu_Result {
@@ -211,7 +211,7 @@ pub fn copy_confirm_a_call_hook(
 
 
 #[unity::hook("App", "GameSaveDataUtil", "DeleteAll")] // 0x7102285C50
-pub fn game_save_data_util_delete_all_hook(
+fn game_save_data_util_delete_all_hook(
     sup: ProcInst,
     method_info: OptionalMethod,
 ) {
@@ -225,7 +225,7 @@ pub fn game_save_data_util_delete_all_hook(
 }
 
 #[unity::hook("App", "MainSequence", "AutoSave")] // 0x7101EDE820
-pub fn main_auto_save_hook(
+fn main_auto_save_hook(
     this: MainSequence,
     method_info: OptionalMethod,
 ) {
@@ -248,7 +248,7 @@ pub fn main_auto_save_hook(
 }
 
 #[unity::hook("App", "MapSequence", "AutoSave")] // 0x710236C9A0
-pub fn map_auto_save_hook(
+fn map_auto_save_hook(
     this: MapSequence,
     method_info: OptionalMethod,
 ) {

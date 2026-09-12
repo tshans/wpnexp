@@ -97,7 +97,7 @@ use crate::game::weaponlevel::wexp_to_wlvl_string;
 
 
 #[unity::hook("App", "ClassChange.ChangeJobData", "GetDispWeaponLevel")] // 0x71019c6590
-pub fn class_change_get_disp_wlvl_hook(
+fn class_change_get_disp_wlvl_hook(
     this: ClassChange_ChangeJobData,
     kind: ItemData_Kinds,
     unit: Unit,
@@ -131,7 +131,7 @@ pub fn class_change_get_disp_wlvl_hook(
 
 
 #[unity::hook("App", "Unit", "GetWeaponLevel")] // 0x7101A0C050
-pub fn unit_get_weapon_level_hook(
+fn unit_get_weapon_level_hook(
     this: Unit,
     kind: ItemData_Kinds,
     calc_enhance: bool,
@@ -159,7 +159,7 @@ pub fn unit_get_weapon_level_hook(
 }
 
 // Helper functions for Unit$$UpdateStateImpl
-pub fn add_skills(this: Unit, to: SkillArray, from: SkillArray) {
+fn add_skills(this: Unit, to: SkillArray, from: SkillArray) {
     if !from.is_null() {
         let mut update = false;
         for i in from.m_list().to_array().as_mut_slice() {
@@ -185,7 +185,7 @@ pub fn add_skills(this: Unit, to: SkillArray, from: SkillArray) {
     }
 }
 
-pub fn add_skills_god(this: Unit, to: SkillArray, from: SkillArray) {
+fn add_skills_god(this: Unit, to: SkillArray, from: SkillArray) {
     if !from.is_null() {
         let mut update = false;
         for i in from.m_list().to_array().as_mut_slice() {
@@ -209,7 +209,7 @@ pub fn add_skills_god(this: Unit, to: SkillArray, from: SkillArray) {
     }
 }
 
-pub fn add_skill(this: Unit, to: SkillArray, skill: SkillData, category: SkillData_Categorys, age: i32) {
+fn add_skill(this: Unit, to: SkillArray, skill: SkillData, category: SkillData_Categorys, age: i32) {
     let mut update = false;
     if !skill.is_null() {
         let style_skills = skill.m_style_skills();
@@ -229,7 +229,7 @@ pub fn add_skill(this: Unit, to: SkillArray, skill: SkillData, category: SkillDa
 }
 
 #[unity::hook("App" "Unit", "UpdateStateImpl")] // 0x7101A12020
-pub fn unit_update_state_impl_hook(
+fn unit_update_state_impl_hook(
     this: Unit,
     is_auto_equip: bool,
     equipped: UnitItem,
@@ -411,7 +411,7 @@ pub fn unit_update_state_impl_hook(
 }
 
 #[skyline::hook(offset = 0x1A21530)] // 0x7101A21530
-pub fn unit_item_equip_hook(
+fn unit_item_equip_hook(
     this: Unit,
     _method_info: OptionalMethod,
 ) -> bool {
@@ -426,7 +426,7 @@ pub fn unit_item_equip_hook(
 }
 
 #[skyline::hook(offset = 0x1A282D0)] // 0x7101A282D0
-pub fn unit_item_equip_options_hook(
+fn unit_item_equip_options_hook(
     this: Unit,
     index: i32,
     reoder: bool,
@@ -581,7 +581,7 @@ pub fn unit_item_equip_options_hook(
 }
 
 #[unity::hook("App", "Unit", "CanBreakable")] // 0x7101A241F0
-pub fn unit_can_breakable_hook(
+fn unit_can_breakable_hook(
     this: Unit,
     target: Unit,
     _method_info: OptionalMethod,
@@ -629,7 +629,7 @@ pub fn unit_can_breakable_hook(
 }
 
 #[unity::hook("App", "Unit", "CanEnemyEngageAttack")] // 0x7101A289E0
-pub fn unit_can_enemy_engage_attack_hook(
+fn unit_can_enemy_engage_attack_hook(
     this: Unit, 
     _method_info: OptionalMethod,
 ) -> bool {
@@ -687,7 +687,7 @@ pub fn unit_can_enemy_engage_attack_hook(
 }
 
 #[unity::hook("App", "Unit", "SetOptimalWeaponForClassChange")] // 0x7101A3CDF0
-pub fn unit_set_optimal_weapon_hook(
+fn unit_set_optimal_weapon_hook(
     this: Unit,
     weapon_mask: WeaponMask,
     is_bullet: bool,
@@ -762,7 +762,7 @@ pub fn unit_set_optimal_weapon_hook(
 }
 
 #[unity::hook("App", "Unit", "ItemAddOnDlcEvil")] // 0x7101A3F520
-pub fn unit_item_add_on_dlc_evil_hook(
+fn unit_item_add_on_dlc_evil_hook(
     this: Unit, 
     iids: Array<Il2CppString>,
     chapter: ChapterData,
@@ -818,7 +818,7 @@ pub fn unit_item_add_on_dlc_evil_hook(
 }
 
 #[unity::hook("App", "Unit", "EquipableItemAdd")] // 0x7101A408E0
-pub fn unit_equipable_item_add(
+fn unit_equipable_item_add(
     this: Unit,
     iids: Array<Il2CppString>,
     _method_info: OptionalMethod,
@@ -842,7 +842,7 @@ pub fn unit_equipable_item_add(
 }
 
 #[skyline::hook(offset = 0x1A417F0)] // 0x7101A417F0, App.Unit$$HasEquipableItem
-pub fn unit_has_equipable_item_hook(
+fn unit_has_equipable_item_hook(
     this: Unit,
     _method_info: OptionalMethod,
 ) -> bool {
@@ -856,7 +856,7 @@ pub fn unit_has_equipable_item_hook(
 }
 
 #[skyline::hook(offset = 0x1A41E30)] // 0x7101A41E30, App.Unit$$HasEquipableItem
-pub fn unit_has_equipable_item_range_hook(
+fn unit_has_equipable_item_range_hook(
     this: Unit,
     range: i32,
     _method_info: OptionalMethod,
@@ -875,7 +875,7 @@ pub fn unit_has_equipable_item_range_hook(
 }
 
 #[skyline::hook(offset = 0x1A42510)] // 0x7101A42510, App.Unit$$HasEquipableItem
-pub fn unit_has_equipable_item_kind_hook(
+fn unit_has_equipable_item_kind_hook(
     this: Unit,
     kind: ItemData_Kinds,
     _method_info: OptionalMethod
@@ -892,7 +892,7 @@ pub fn unit_has_equipable_item_kind_hook(
 }
 
 #[skyline::hook(offset = 0x1A42B50)] // 0x7101A42B50, App.Unit$$CanItemEquip
-pub fn unit_can_item_equip_uire_hook(
+fn unit_can_item_equip_uire_hook(
     this: Unit,
     unit_item: UnitItem,
     rod: bool,
@@ -907,7 +907,7 @@ pub fn unit_can_item_equip_uire_hook(
 }
 
 #[skyline::hook(offset = 0x1A43120)] // 0x7101A43120, App.Unit$$CanItemEquip
-pub fn unit_can_item_equip_idrw_hook(
+fn unit_can_item_equip_idrw_hook(
     this: Unit,
     item: ItemData,
     rod: bool,
@@ -1047,7 +1047,7 @@ pub fn unit_can_item_equip_idrw_hook(
 }
 
 #[skyline::hook(offset = 0x1A436B0)] // 0x7101A436B0, App.Unit$$CanItemEquip
-pub fn unit_can_item_equip_ire_hook(
+fn unit_can_item_equip_ire_hook(
     this: Unit,
     index: i32,
     rod: bool,
@@ -1059,7 +1059,7 @@ pub fn unit_can_item_equip_ire_hook(
 }
 
 #[skyline::hook(offset = 0x1A43CE0)] // 0x7101A43CE0, App.Unit$$CanUseCannon
-pub fn unit_can_use_cannon_xz_hook(
+fn unit_can_use_cannon_xz_hook(
     this: Unit,
     x: i32,
     z: i32,
@@ -1074,7 +1074,7 @@ pub fn unit_can_use_cannon_xz_hook(
 }
 
 #[skyline::hook(offset = 0x1A44A40)] // 0x7101A44A40, App.Unit$$CanUseCannon
-pub fn unit_can_use_cannon_terrain_hook(
+fn unit_can_use_cannon_terrain_hook(
     this: Unit,
     terrain: TerrainData_2,
     _method_info: OptionalMethod,
@@ -1101,7 +1101,7 @@ pub fn unit_can_use_cannon_terrain_hook(
 }
 
 #[unity::hook("App", "Unit", "NextItemEquip")] // 0x7101A456A0
-pub fn unit_next_item_equip_hook(
+fn unit_next_item_equip_hook(
     this: Unit,
     reverse: bool,
     _method_info: OptionalMethod,
@@ -1140,7 +1140,7 @@ pub fn unit_next_item_equip_hook(
 }
 
 #[unity::hook("App", "Unit", "GetEngageEquip")] // 0x7101A478C0
-pub fn unit_get_engage_equip_hook(
+fn unit_get_engage_equip_hook(
     this: Unit,
     skill: SkillData,
     target: Unit,
@@ -1213,7 +1213,7 @@ pub fn unit_get_engage_equip_hook(
 }
 
 #[skyline::hook(offset = 0x1A48280)] // 0x7101A48280, App.Unit$$GetAttackRange
-pub fn unit_get_attack_range_hook(
+fn unit_get_attack_range_hook(
     this: Unit,
     min_range: &mut i32,
     max_range: &mut i32,
@@ -1243,7 +1243,7 @@ pub fn unit_get_attack_range_hook(
 }
 
 #[skyline::hook(offset = 0x1A49260)] // 0x7101A49260, App.Unit$$GetAttackRange
-pub fn unit_get_attack_range_item_hook(
+fn unit_get_attack_range_item_hook(
     this: Unit,
     min_range: &mut i32,
     max_range: &mut i32,
@@ -1276,7 +1276,7 @@ pub fn unit_get_attack_range_item_hook(
 }
 
 #[skyline::hook(offset = 0x1A48A70)] // 0x7101A48A70, App.Unit$$GetRodRange
-pub fn unit_get_rod_range_hook(
+fn unit_get_rod_range_hook(
     this: Unit,
     min_range: &mut i32,
     max_range: &mut i32,
@@ -1444,7 +1444,7 @@ pub fn unit_get_rod_range_hook(
 }
 
 #[skyline::hook(offset = 0x1A49B90)] // 0x7101A49B90, App.Unit$$GetRodRange
-pub fn unit_get_rod_range_item_hook(
+fn unit_get_rod_range_item_hook(
     this: Unit,
     min_range: &mut i32,
     max_range: &mut i32,
@@ -1479,7 +1479,7 @@ pub fn unit_get_rod_range_item_hook(
 }
 
 #[unity::hook("App", "Unit", "GetRevengeWeapon")] // 0x7101A4A4C0
-pub fn unit_get_revenge_weapon_hook(
+fn unit_get_revenge_weapon_hook(
     this: Unit,
     target: Unit,
     target_item: UnitItem,
@@ -1557,7 +1557,7 @@ pub fn unit_get_revenge_weapon_hook(
 }
 
 #[skyline::hook(offset = 0x1A4BA20)] // 0x7101A4BA20, Unit$$CanItemUse
-pub fn unit_can_item_use_hook(
+fn unit_can_item_use_hook(
     this: Unit,
     item: ItemData,
     _method_info: OptionalMethod,
@@ -1579,7 +1579,7 @@ pub fn unit_can_item_use_hook(
 }
 
 #[skyline::hook(offset = 0x1A4C060)] // 0x7101A4C060, Unit$$CanItemUse
-pub fn unit_can_item_use_target_hook(
+fn unit_can_item_use_target_hook(
     this: Unit,
     item: ItemData,
     target_unit: Unit,
@@ -1602,7 +1602,7 @@ pub fn unit_can_item_use_target_hook(
 }
 
 #[unity::hook("App", "Unit", "IsDrawActiveColor")] // 0x7101A4DA20
-pub fn unit_is_draw_active_color(
+fn unit_is_draw_active_color(
     this: Unit,
     unit_item: UnitItem,
     _method_info: OptionalMethod,

@@ -4,6 +4,7 @@ use engage::app::BattleInfoSide_Status;
 use engage::app::CalculatorCommand;
 use engage::app::CalculatorManager;
 use engage::app::Force_Type;
+use engage::app::IBattleDetail;
 use engage::app::IBattleInfoSide;
 use engage::app::IBattleInfoSideMethods;
 use engage::app::IBitFieldTemplate32_1Methods;
@@ -25,6 +26,7 @@ use crate::game::data::get_total_wexp;
 use crate::game::data::set_once_wexp;
 use crate::game::data::set_total_wexp;
 use crate::game::data::set_weapon_kind;
+use crate::misc::statics::ONCE_WEXP_INDEX;
 
 
 pub extern "C" fn register_weapon_level_calculator_commands(calculator: CalculatorManager) {
@@ -347,8 +349,8 @@ pub extern "C" fn set_impl_side_unit_wexp_command(
         }
     }
 
-    set_weapon_kind(unit_item.get_kind().value);
     set_total_wexp(unit, value as i32);
+    set_weapon_kind(unit_item.get_kind().value);
 }
 
 pub extern "C" fn is_visible_unit_wexp_command(
@@ -376,7 +378,11 @@ pub extern "C" fn get_impl_side_earned_wexp_command(
     side: BattleInfoSide,
     _method_info: OptionalMethod,
 ) -> f32 {
-    get_once_wexp(side.m_unit()) as f32
+    if !*crate::misc::statics::OVERWRITE.lock().unwrap() {
+        get_once_wexp(side.m_unit()) as f32
+    } else {
+        side.m_detail().m_base_params().get(*ONCE_WEXP_INDEX.lock().unwrap()) as f32
+    }
 }
 
 pub extern "C" fn set_impl_side_earned_wexp_command(
@@ -385,7 +391,11 @@ pub extern "C" fn set_impl_side_earned_wexp_command(
     value: f32,
     _method_info: OptionalMethod,
 ) {
-    set_once_wexp(side.m_unit(), value as i32);
+    if !*crate::misc::statics::OVERWRITE.lock().unwrap() {
+        set_once_wexp(side.m_unit(), value as i32);
+    } else {
+        side.m_detail().m_base_params().set(*ONCE_WEXP_INDEX.lock().unwrap(), value as i32);
+    }
 }
 
 pub extern "C" fn is_visible_earned_wexp_command(

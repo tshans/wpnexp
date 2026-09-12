@@ -19,7 +19,7 @@ use crate::misc::statics::TEMP_UNIT_WEXP_DATA;
 use crate::misc::statics::WEXP_LEDGER;
 
 
-pub fn write_to_ledger(command_num: i32) {
+pub(crate) fn write_to_ledger(command_num: i32) {
     println!("The ledger has been appended due to wexp gain on count {}.", command_num);
 
     let mut guard = TEMP_UNIT_WEXP_DATA.lock().unwrap();
@@ -37,7 +37,7 @@ pub fn write_to_ledger(command_num: i32) {
     };
 }
 
-pub fn read_from_ledger(command_num: i32) {
+pub(crate) fn read_from_ledger(command_num: i32) {
     println!("The ledger is to be reset to count {}.", command_num);
 
     let mut led_guard = WEXP_LEDGER.lock().unwrap();
@@ -74,7 +74,7 @@ pub fn read_from_ledger(command_num: i32) {
 }
 
 #[unity::hook("App", "MapHistory.Rewind", "ClassChange")] // 0x7102716410
-pub fn rewind_class_change_hook(
+fn rewind_class_change_hook(
     this: MapHistory_Rewind,
     unit: Unit,
     method_info: OptionalMethod,
@@ -93,7 +93,7 @@ pub fn rewind_class_change_hook(
 }
 
 #[unity::hook("App", "MapHistory.Rewind", "PreviewDecide")] // 0x710270D860
-pub fn rewind_preview_decide_hook(
+fn rewind_preview_decide_hook(
     this: MapHistory_Rewind,
     method_info: OptionalMethod,
 ) {
@@ -106,7 +106,7 @@ pub fn rewind_preview_decide_hook(
 // crystal. For example, the time crystal is obtained at the start of chapter 4 turn 2 in vanilla. Without the following
 // hook, rewinding to the start of turn 2 would set the dynamic data to zero, losing anything gained during turn 1.
 #[unity::hook("App", "GameUserData", "set_IsRewindEnable")] // 0x7102516760
-pub fn game_user_data_set_rewind_hook(
+fn game_user_data_set_rewind_hook(
     this: GameUserData,
     value: bool,
     method_info: OptionalMethod,
@@ -116,4 +116,10 @@ pub fn game_user_data_set_rewind_hook(
     }
 
     call_original!(this, value, method_info)
+}
+
+pub fn install_rewind_hooks() {
+    skyline::install_hook!(crate::game::rewind::rewind_class_change_hook);
+    skyline::install_hook!(crate::game::rewind::rewind_preview_decide_hook);
+    skyline::install_hook!(crate::game::rewind::game_user_data_set_rewind_hook);
 }

@@ -1,4 +1,3 @@
-
 use engage::app::Force_Type;
 use engage::app::IJobDataMethods;
 use engage::app::IUnit;
@@ -19,7 +18,7 @@ pub static WEXP_VALUES: [i32; 8] = [0, 1, 31, 71, 121, 181, 251, 331];
 pub static WEXP_DELTAS: [i32; 8] = [0, 30, 40, 50, 60, 70, 80, -1];
 
 #[unity::hook("App", "WeaponLevel", "GetKind")] // 0x71021C93F0
-pub fn weapon_level_get_kind_hook(
+fn weapon_level_get_kind_hook(
     level: Il2CppString,
     _method_info: OptionalMethod,
 ) -> WeaponLevel_Kind {                         // Vanilla Engage values
@@ -60,6 +59,7 @@ pub fn wexp_to_wlvl_kind(value: i32) -> WeaponLevel_Kind {
     }
 }
 
+#[allow(dead_code)]
 pub fn wexp_to_wlvl_value(value: i32) -> i32 {
     if value < WEXP_VALUES[1] {
         0
@@ -108,6 +108,7 @@ pub fn wlvl_to_wexp_value(wlvl: i32) -> i32 {
     WEXP_VALUES[wlvl as usize]
 }
 
+#[allow(dead_code)]
 pub fn wlvl_to_wexp_string(wlvl: String) -> i32 {
     if wlvl.as_str() == WEXP_KINDS[0] {
         WEXP_VALUES[0]
@@ -138,6 +139,7 @@ pub fn wlvl_delta_value(wlvl: i32) -> i32 {
     WEXP_DELTAS[wlvl as usize]
 }
 
+#[allow(dead_code)]
 pub fn wlvl_delta_string(wlvl: String) -> i32 {
 
     if wlvl.as_str() == WEXP_KINDS[0] {
@@ -191,4 +193,8 @@ pub fn can_gain_wexp(unit: Unit, kind: ItemData_Kinds, value: i32) -> (bool, i32
             (true, max_job_wexp - base_wexp, starting_offset, delta)
         }
     }
+}
+
+pub fn install_wlvl_hooks() {
+    skyline::install_hook!(crate::game::weaponlevel::weapon_level_get_kind_hook);
 }

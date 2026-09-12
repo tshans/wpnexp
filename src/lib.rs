@@ -1,10 +1,4 @@
-#![feature(lock_value_accessors)]
-
-extern crate self as wpnexp;
-
-pub mod game;
-pub mod misc;
-pub mod ui;
+extern crate wpnexp_lib as wpnexp_lib;
 
 // I like the current WEXP setup:
 //     Total WEXP = Static + Dynamic + Job
@@ -69,16 +63,12 @@ pub fn main() {
         );
     }));
 
-    // Other plugins can disable wpnexp by subscribing to the Initialize service with a function that
-    // sets the ENABLED mutex to false.
-    crate::misc::service::publish_wexp_event(crate::misc::service::WexpEvent::Initialize);
-
-    if crate::misc::statics::ENABLED.get_cloned().is_ok_and(|b| !b) {
-        println!("wpnexp v{} has been disabled by another plugin.", crate::misc::statics::VERSION);
-        return
+    let config = wpnexp_lib::read_config().unwrap();
+    if !config.enabled {
+        println!("The wpnexp plugin has been disabled by another plugin. v{}", wpnexp_lib::VERSION);
+    } else {
+        wpnexp_lib::misc_init(config.overwrite, config.index, config.unit_aptitude, config.god_aptitude);
+        wpnexp_lib::game_init();
+        wpnexp_lib::ui_init();
     }
-
-    crate::game::game_init();
-    crate::misc::misc_init();
-    crate::ui::ui_init();
 }

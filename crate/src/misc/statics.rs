@@ -2,17 +2,16 @@
 use std::sync::{Mutex, OnceLock};
 
 use crate::game::data::{
-    BattleWEXP,
-    UnitWexpData,
-    WexpData,
-    WexpRewindLedger,
-    read_default_dyn_unit_data,
-    read_default_unit_data,
-    read_weapon_data,
+    BattleWEXP, UnitWexpData, WexpData, WexpRewindLedger, read_default_dyn_unit_data, read_default_unit_data, read_weapon_data,
 };
 
 pub static VERSION: &str = "1.0.0";
-pub static ENABLED: Mutex<bool> = Mutex::<bool>::new(true);
+
+// Configuration settings
+pub static OVERWRITE: Mutex<bool> = Mutex::<bool>::new(false);
+pub static ONCE_WEXP_INDEX: Mutex<usize> = Mutex::<usize>::new(0);
+pub static UNIT_APTITUDE: Mutex<bool> = Mutex::<bool>::new(true);
+pub static GOD_APTITUDE: Mutex<bool> = Mutex::<bool>::new(true);
 
 // This is set statically during plugin launch, loading WEXP values for every weapon from a preset config JSON.
 pub static WEXP_DATA: OnceLock<WexpData> = OnceLock::<WexpData>::new();
@@ -25,8 +24,19 @@ pub static WEXP_LEDGER: Mutex<Option<WexpRewindLedger>> = Mutex::<Option<WexpRew
 
 pub static BATTLE_WEXP: Mutex<Option<BattleWEXP>> = Mutex::<Option<BattleWEXP>>::new(None);
 
-pub fn init_statics() {
+pub fn init_statics(overwrite: bool, index: usize, unit_apt: bool, god_apt: bool) {
     // We allocate memory for each Static dataset by initializing the corresponding safety primitive with a default value.
+    if overwrite {
+        println!("Customized wpnexp plugin is in use. v{}", crate::misc::statics::VERSION);
+        ONCE_WEXP_INDEX.set(index).unwrap();
+    } else {
+        println!("Default wpnexp plugin is in use. v{}", crate::misc::statics::VERSION);
+    }
+
+    OVERWRITE.set(overwrite).unwrap();
+    UNIT_APTITUDE.set(unit_apt).unwrap();
+    GOD_APTITUDE.set(god_apt).unwrap();
+
     // The general Wexp data is identical for every game, so it is initialized in a OnceLock.
     let wexp_data = read_weapon_data().unwrap();
     WEXP_DATA.set(wexp_data).expect("Failed to set WeaponExpData as static.");
